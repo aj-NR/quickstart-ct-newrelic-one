@@ -12,20 +12,20 @@ def message_processing(messages):
     for message in messages:
         payload = json.loads(message['Sns']['Message'])
         stackset_processing(payload)
-    
+
 def stackset_processing(messages):
     cloudFormationClient = session.client('cloudformation')
     snsClient = session.client('sns')
     newRelicStackSNS = os.environ['newRelicStackSNS']
     newRelicRegisterSNS = os.environ['newRelicRegisterSNS']
-    
+
     for stackSetName, params in messages.items():
         logger.info("Processing stack instances for {}".format(stackSetName))
         param_accounts = params['target_accounts']
         param_regions = params['target_regions']
         logger.info("Target accounts : {}".format(param_accounts))
         logger.info("Target regions: {}".format(param_regions))
-        
+
         try:
             stack_operations = True
             cloudFormationClient.describe_stack_set(StackSetName=stackSetName)
@@ -39,9 +39,9 @@ def stackset_processing(messages):
                         if operation['Status'] in ('RUNNING', 'STOPPING'):
                             stack_operations = False
                             break
-                    if stack_operations == False: 
+                    if stack_operations == False:
                         break
-            
+
             if stack_operations:
                 response = cloudFormationClient.create_stack_instances(StackSetName=stackSetName, Accounts=param_accounts, Regions=param_regions)
                 logger.info("StackSet instance created {}".format(response))
@@ -51,10 +51,10 @@ def stackset_processing(messages):
                     snsResponse = snsClient.publish(
                         TopicArn=newRelicRegisterSNS,
                         Message = json.dumps(messageBody))
-                        
+
                     logger.info("Queued for registration: {}".format(snsResponse))
                 except Exception as snsException:
-                    logger.error("Failed to send queue for registration: {}".format(snsException))                
+                    logger.error("Failed to send queue for registration: {}".format(snsException))
             else:
                 logger.warning("Existing StackSet operations still running")
                 messageBody = {}
@@ -65,7 +65,7 @@ def stackset_processing(messages):
                     snsResponse = snsClient.publish(
                         TopicArn=newRelicStackSNS,
                         Message = json.dumps(messageBody))
-                        
+
                     logger.info("Re-queued for stackset instance creation: {}".format(snsResponse))
                 except Exception as snsException:
                     logger.error("Failed to send queue for stackset instance creation: {}".format(snsException))
@@ -80,8 +80,11 @@ def lifecycle_processing(event):
         account_id = event['detail']['serviceEventDetails']['createManagedAccountStatus']['account']['accountId']
         stackSetName = os.environ["stackSetName"]
         stackset_instances = list_stack_instance_by_account(session, stackSetName, account_id)
-        stackset_instances_regions = list_stack_instance_region(session, stackSetName)
-        
+        if event['region'] is not None:
+            stackset_instances_regions = event['region'].split(" ")
+        else:
+            stackset_instances_regions = list_stack_instance_region(session, stackSetName)
+
         logger.info("Processing Lifecycle event for {}".format(account_id))
         #stackset instance does not exist, create a new one
         if len(stackset_instances) == 0:
@@ -89,7 +92,7 @@ def lifecycle_processing(event):
             messageBody = {}
             messageBody[stackSetName] = { 'target_accounts': [account_id], 'target_regions': stackset_instances_regions }
             stackset_processing(messageBody)
-        
+
         #stackset instance already exist, check for missing region
         elif len(stackset_instances) > 0:
             stackset_region = []
@@ -104,7 +107,7 @@ def lifecycle_processing(event):
             else:
                 logger.info("Stackset instance already exist : {}".format(stackset_instances))
     else:
-         logger.error("Invalid event state, expected: SUCCEEDED : {}".format(event))    
+        logger.error("Invalid event state, expected: SUCCEEDED : {}".format(event))
 
 def list_stack_instance_by_account(target_session, stack_set_name, account_id):
     '''
@@ -115,16 +118,16 @@ def list_stack_instance_by_account(target_session, stack_set_name, account_id):
         stackset_result = cfn_client.list_stack_instances(
             StackSetName = stack_set_name,
             StackInstanceAccount=account_id
-            )
-        
-        if stackset_result and 'Summaries' in stackset_result:            
+        )
+
+        if stackset_result and 'Summaries' in stackset_result:
             stackset_list = stackset_result['Summaries']
             while 'NextToken' in stackset_result:
                 stackset_result = cfn_client.list_stackset_instance(
                     NextToken = stackset_result['NextToken']
                 )
                 stackset_list.append(stackset_result['Summaries'])
-            
+
             return stackset_list
         else:
             return False
@@ -140,16 +143,16 @@ def list_stack_instance_region(target_session, stack_set_name):
         cfn_client = target_session.client('cloudformation')
         stackset_result = cfn_client.list_stack_instances(
             StackSetName = stack_set_name
-            )
-        
-        if stackset_result and 'Summaries' in stackset_result:            
+        )
+
+        if stackset_result and 'Summaries' in stackset_result:
             stackset_list = stackset_result['Summaries']
             while 'NextToken' in stackset_result:
                 stackset_result = cfn_client.list_stackset_instance(
                     NextToken = stackset_result['NextToken']
                 )
                 stackset_list.append(stackset_result['Summaries'])
-            
+
             stackset_list_region = []
             for instance in stackset_list:
                 stackset_list_region.append(instance['Region'])
@@ -161,7 +164,7 @@ def list_stack_instance_region(target_session, stack_set_name):
     except Exception as e:
         LOGGER.error("List Stack Instance error: %s" % e)
         return False
-        
+
 def lambda_handler(event, context):
     logger.info(json.dumps(event))
     try:
