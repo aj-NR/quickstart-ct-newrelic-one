@@ -1,0 +1,16 @@
+## Introduction
+
+This Guidance Document is created by New Relic in collaboration with Amazon Web Services (AWS). 
+
+This ec2 guide provides comprehensive information on effectively automating the deployment of the New Relic infrastructure agent on EC2 instances. 
+It covers essential prerequisites, fundamental concepts, detailed input parameter explanations, and a step-by-step walkthrough for deploying the CloudFormation template within an AWS account.
+
+### By following the instructions in this guide, you will achieve the following :
+
+* Efficiently deploy the New Relic infrastructure agent on all existing instances within your AWS account.
+* Automatically deploy the New Relic infrastructure agent on any new instances as they transition into the "running" state.
+* Customize the target EC2 instances by applying a filter based on key-value pair tags. By default, all instances are considered target instances.
+* Regularly update the New Relic infrastructure agent on all target instances once a month to ensure you have the latest version.
+* Monitor the installation status (success or failure) of the New Relic infrastructure agent in your New Relic account logs. The logs will include information such as time, instance ID, and command execution ID.
+* If necessary, safely remove the template and revert any resources created during the installation process.
+* Lastly, find helpful tips and guidance on support and troubleshooting towards the end of this guide.

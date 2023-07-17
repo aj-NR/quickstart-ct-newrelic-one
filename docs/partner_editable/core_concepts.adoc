@@ -1,0 +1,15 @@
+
+### The CloudFormation template automates the installation of the New Relic infrastructure agent by creating the following AWS resources:
+
+1. [Systems Manager - State manager Association](https://docs.aws.amazon.com/systems-manager/latest/userguide/state-manager-associations.html)
+   
+2. [EventBridge - ApiDestination](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-api-destinations.html)
+   
+3. [EventBridge - Connection](https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Connection.html)
+   
+4. [IAM - Policy](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)
+   
+5. [IAM - Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)
+   
+6. [EventBridge - Rule](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rules.html)
+   

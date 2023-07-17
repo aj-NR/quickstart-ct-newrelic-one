@@ -1,0 +1,3 @@
+## Searching for InstallationStatus Logs in NewRelic
+
+For easy and efficient identification of newrelic agent installation status logs in New Relic, we have included a dedicated tag with a key-value pair that can be used directly in filters. The tag is "PackageName": "New-Relic-infrastructure-monitoring-agent", enabling quicker search and identification of the logs.

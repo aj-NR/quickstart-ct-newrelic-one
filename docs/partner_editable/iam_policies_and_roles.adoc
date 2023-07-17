@@ -1,0 +1,6 @@
+## IAM Policies and Roles
+
+* The ec2 instances where newrelic agent needs to be installed must have [this](https://github.com/SuruchiSaboo/NewRelic-General-Guidance-Documents-AWS/blob/main/docs/AmazonSSMManagedInstanceCore.json) permission attached to their IAM profile. This is required for ec2 Instance to interact with Systems Manager AWS Service.
+ This is managed policy and already available in AWS policies with name AmazonSSMManagedInstanceCore.
+
+* User must have permissions to create and deploy ec2 guidance cloudformation template in AWS Account. 

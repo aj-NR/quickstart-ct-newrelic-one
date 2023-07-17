@@ -1,0 +1,10 @@
+## Deployment Steps
+
+1. Before proceeding with the deployment, please review the prerequisites section.
+2. Access the AWS CloudFormation resource and navigate to the designer to create a new stack. Utilize the EC2 guidance template provided here to generate the necessary resources.
+3. When creating the stack, ensure to provide a meaningful name and fill in all the requested parameters. For further details, refer to the input_parameters section. Please keep in mind the parameter constraints and descriptions.
+4. Wait for the deployment process to complete.
+5. Once the deployment is finished, you can monitor the installation status in the New Relic account logs. 
+    * Note that if you specify an EC2 tag, the new relic agent will only be installed on instances that have that specific key-value pair tag. 
+    * Additionally, the agent will be installed one time on deployment, everytime when instances transition to the "running" state and all instances will get updated with the latest New Relic agent once a month.
+6. In case of any issues, please consult the support and troubleshooting section for assistance.

@@ -1,0 +1,8 @@
+
+### New Relic Infrastructure monitoring Agent - Amazon EC2 Integration on AWS
+
+New Relic's infrastructure monitoring agent is a lightweight executable file that collects data about your hosts. It also forwards EC2 metadata from our on-host integrations to New Relic products, as well as log data for log analytics.
+
+After you install the New Relic infrastructure agent on each EC2 instance, you can view metrics from that instance and get a comprehensive, real-time view of the performance and status of your EC2 instances.
+
+Refer [this](https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/get-started/install-infrastructure-agent/) document for more information.

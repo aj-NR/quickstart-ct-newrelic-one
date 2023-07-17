@@ -1,0 +1,17 @@
+
+## Customization
+
+ The EC2 guidance CloudFormation template offers extensive customization options. You have the flexibility to rename resources, apply tag key-value pairs to EC2 instances according to your preferences, and modify various parameters simply by updating the template.
+
+## Troubleshooting
+
+**The EC2 guidance CloudFormation template has undergone testing to ensure successful deployment. It not only installs the agent but also sends installation status to New Relic logs.**
+
+* In the event of a failure during the CloudFormation stack deployment, detailed error messages can be found under the "Events" section in the stack details. Additionally, under the "Resources" section, you can view the created, deleted, creating, deleting and failed to delete resources.
+
+   To resolve the issue, identify the reason for the failure, delete the current stack, and redeploy it after addressing the underlying problems.
+
+* If the agent is not being installed or logs are not being sent to New Relic, it is advisable to verify the license key. Please ensure that the key is correctly copied, taking into account the regex constraint specified. 
+
+* If InstallationStatus is Failed, reason of failure can be checked in Run Command -> Command history under Systems Manager resource by searching for the command id present in new relic logs.
+* Attempt to delete the stack and then redeploy it if issue persists.

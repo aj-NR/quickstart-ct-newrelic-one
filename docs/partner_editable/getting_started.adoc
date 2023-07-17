@@ -1,0 +1,6 @@
+# Guidance for Automated Installation of New Relic Infrastructure agent in ec2 instances of AWS account using Cloudformation Template.
+
+### Summary: 
+Utilize the CloudFormation template to automate the deployment of the New Relic infrastructure monitoring agent for both existing and new instances in a specific region of an AWS Account, while also monitoring the installation status within the New Relic platform.
+
+Note: This template is region specific. To install New Relic Infrastructure agent in instances of a particular AWS Region, cloudformation template needs to be deployed in that region.

@@ -1,0 +1,20 @@
+## Prerequisites
+
+* User must have an AWS Account already created where he'll be deploying the ec2 quickstart template.
+* Sign in to AWS account at [here](https://aws.amazon.com) with an IAM user role that has the necessary permissions to deploy cloudformation template.
+* EC2 instances requiring installation of the New Relic infrastructure agent must have the public IP address feature enabled.
+* The instance's Amazon Machine Image (AMI) must have the SSM Agent installed. Note: Most AMIs already include the SSM Agent by default.
+  
+  See the following resources for more information:
+
+  [AWS Systems Manager](https://aws.amazon.com/systems-manager/)
+
+  [AWS Systems Manager Automation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-automation.html)
+
+  [Working with SSM Agent](https://docs.aws.amazon.com/systems-manager/latest/userguide/ssm-agent.html)
+
+* The EC2 instances must have the necessary permissions to interact with SSM. The instance profile/role should be attached with the policy "AmazonSSMManagedInstanceCore."
+* The VPC subnet associated with the instance must have a route table connected to an internet gateway.
+* It is necessary for the user to have a New Relic account and a corresponding license key.
+
+
